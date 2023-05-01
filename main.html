@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        /* Font styles */
+        h1 {
+            font-family: Arial, sans-serif;
+            color: purple;
+        }
+
+        h3 {
+            font-family: Arial, sans-serif;
+        }
+
+        table,
+        th,
+        .dataTables_filter label,
+        .dataTables_length label,
+        .dataTables_paginate a {
+            font-family: Arial, sans-serif;
+        }
+
+        .dataTables_filter input[type="search"] {
+            border-color: #000;
+            width: 400px;
+            height: 30px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            overflow: visible;
+            background-color: #fff;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 0% auto;
+            padding: 60px;
+            border: 1px solid #0202;
+            width: 500px;
+            height: 350px;
+        }
+
+        /* Close button styles */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 40px;
+            font-weight: bold;
+            top: -20px;
+            /* Add this property to move the button up */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        table thead tr th {
+            text-align: left;
+        }
+
+        .invalid-row {
+            background-color: #eee;
+            color: #999999;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Quick Search 2.0 </h1>
+    <h3>The grab'n'go approach to finding accounts </h3>
+    <!--HTML table with student data-->
+    <table id="tableID" class="display">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Services</th>
+                <th>Term</th>
+                <th>Credentials</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+    </table>
+    <!-- Text and image above iframe in modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&arial;</span>
+            <p></p>
+            <img src="">
+        </div>
+    </div>
+
+    <script>
+        // JSON data
+        var jsonData = [
+            {
+                "type": "FF",
+                "services": "optik4.0_core, int75",
+                "term": "2YT",
+                "credentials": "testaccount001@email.com / pazzW0rd",
+                "status": "Valid",
+                "expected": "Redirect"
+            },
+            {
+                "type": "C2F",
+                "services": "homePhone_only",
+                "term": "MTM",
+                "credentials": "testAccountsz@email.com/ 14#hfg36",
+                "status": "invalid",
+                "expected": "Automated"
+            }
+        ];
+
+        $(document).ready(function () {
+            var table = $('#tableID').DataTable({
+                // Enable the searching
+                // of the DataTable
+                searching: true,
+                // Use JSON data as the data source
+                // Set the default number of entries to show to all
+                pageLength: -1,
+                data: jsonData,
+                // Define the columns using the "data" property
+                // to map the JSON keys to the table columns
+                columns: [
+                    { data: "type" },
+                    { data: "services" },
+                    { data: "term" },
+                    { data: "credentials" },
+                    { data: "status" },
+                    { data: "expected" }
+                ],
+                // Apply CSS class to rows with invalid status
+                createdRow: function (row, data, dataIndex) {
+                    if (data.status.toLowerCase() === "invalid") {
+                        $(row).addClass("invalid-row");
+                    }
+                }
+            });
+
+            // Listen for keyup event on search field
+            $('#tableID_filter input').keyup(function () {
+                // Check if typed text is "dj mode"
+                if ($(this).val().toLowerCase() === "dj mode") {
+                    // Create an iframe with the desired source
+                    var iframe = $('<iframe src="https://www.youtube.com/embed/GNSohPwNJsM" style="border: 0" width="500px" height="300px" position="relative" frameborder="0" scrolling="no"></iframe>');
+                    // Create a modal with the iframe and close button
+                    var modal = $('<div class="modal"><div class="modal-content"><span class="close">&times;</span></div></div>');
+                    modal.find('.modal-content').append('<p>Congrats! you found dj mode, heres a playlist of Ben and Lances fav djs - enjoy!</p>');
+                    modal.find('.modal-content').append('<img src="">');
+                    modal.find('.modal-content').append(iframe);
+                    // Append the modal to the document body
+                    $('body').append(modal);
+                    // Open the modal
+                    modal.show();
+                    // Add a click event listener to the close button
+                    $('.close').click(function () {
+                        // Remove the modal from the DOM
+                        modal.remove();
+                    });
+                }
+            });
+        });
+
+        // Add rows to the table body
+        $('#tableID tbody').html(rows);
+
+        // Initialize the DataTable
+        $(document).ready(function () {
+            $('#tableID').DataTable({
+                // Enable the searching of the DataTable
+                searching: true
+            });
+        });
+
+
+    </script>
+    <script>
+        // Initialize the DataTable with JSON data
+        $(document).ready(function () {
+            $('#tableID').DataTable({
+                // Enable the searching
+                // of the DataTable
+                searching: true,
+                // Use JSON data as the data source
+                data: jsonData,
+                // Define the columns using the "data" property
+            });
+        });
+
+    </script>
+</body>
+
+</html>
